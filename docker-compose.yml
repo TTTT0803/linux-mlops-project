@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  api:
+    build: ./api              # Build từ thư mục api
+    container_name: mlops-api # Tên container
+    ports:
+      - "8000:8000"           # Mở cổng 8000
+    restart: always           # Tự khởi động lại nếu bị lỗi
