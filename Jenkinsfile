@@ -37,7 +37,7 @@ pipeline {
                 script {
                     echo 'Chay Unit Test (Pytest)...'
                     sleep 5
-                    sh 'docker compose exec -T api pytest'
+                    sh 'docker compose exec -T api python -m pytest'
                 }
             }
         }
