@@ -1,5 +1,5 @@
 # 1. Chọn hệ điều hành nền (Python nhẹ)
-FROM python:3.9-slim
+FROM python:3.10-slim
 
 # 2. Tạo thư mục làm việc bên trong container
 WORKDIR /app
