@@ -6,38 +6,35 @@ import os
 
 app = FastAPI()
 
-# Định nghĩa dữ liệu đầu vào (4 chỉ số của hoa Iris)
+# 1. Định nghĩa dữ liệu đầu vào
 class IrisInput(BaseModel):
     sepal_length: float
     sepal_width: float
     petal_length: float
     petal_width: float
 
-# Load model khi app khởi động
-# Lưu ý: Chúng ta sẽ copy file model.pkl vào cùng thư mục này sau
+# 2. Load model khi app khởi động
 model_path = "model.pkl"
 model = None
 
-if os.path.exists(model_path):
-    with open(model_path, "rb") as f:
-        model = pickle.load(f)
-else:
-    print("CANH BAO: Khong tim thay file model.pkl!")
+@app.on_event("startup")
+def load_model():
+    global model
+    if os.path.exists(model_path):
+        with open(model_path, "rb") as f:
+            model = pickle.load(f)
 
-@app.get("/")
-def home():
-    return {"message": "MLOps API is running!"}
-
+# 3. API Dự đoán (Quan trọng)
 @app.post("/predict")
-def predict(item: IrisInput):
+def predict(data: IrisInput):
     if not model:
-        return {"error": "Model chua duoc load"}
+        return {"error": "Model not loaded"}
+    features = np.array([[data.sepal_length, data.sepal_width, data.petal_length, data.petal_width]])
+    prediction = model.predict(features)
+    return {"prediction": str(prediction[0])}
 
-    # Chuyen du lieu ve dang numpy array
-    data = np.array([[item.sepal_length, item.sepal_width, item.petal_length, item.petal_width]])
-
-    # Du doan
-    prediction = model.predict(data)
-
-    # Tra ve ket qua (0, 1, hoac 2)
-    return {"prediction": int(prediction[0])}
+# 4. API Trang chủ (ĐÂY LÀ CHỖ BẠN SỬA ĐỂ DEMO)
+@app.get("/")
+def root():
+    # Sửa dòng dưới này thành câu bạn muốn hiển thị cho thầy xem
+    return {"message": "DEMO FINAL: Chao Thay - He thong da tu dong update!"}
