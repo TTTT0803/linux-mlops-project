@@ -14,24 +14,25 @@ class StudentInput(BaseModel):
     ly: float
     anh: float
 
-# Tên file chính xác
-model_path = "model_final.pkl"
+# --- TÊN FILE MỚI ---
+model_path = "vku_final.pkl"
 model = None
 
 @app.on_event("startup")
 def load_model():
     global model
-    
-    # --- ĐOẠN CODE DEBUG QUAN TRỌNG ---
-    print("--- DEBUG INFO ---")
-    print(f"Current Directory: {os.getcwd()}")
-    print(f"Files here: {os.listdir('.')}")
-    # ----------------------------------
-
+    # Debug xem file có thật không
+    print(f"--- DEBUG: Checking for {model_path} ---")
     if os.path.exists(model_path):
-        with open(model_path, "rb") as f:
-            model = pickle.load(f)
-        print(f"✅ SUCCESS: Loaded {model_path}")
+        # Kiểm tra kích thước file
+        size = os.path.getsize(model_path)
+        print(f"File found! Size: {size} bytes")
+        if size < 1000: # Nếu nhỏ hơn 1KB là file lỗi
+             print("❌ ERROR: File too small (Corrupted)!")
+        else:
+            with open(model_path, "rb") as f:
+                model = pickle.load(f)
+            print("✅ SUCCESS: Model loaded!")
     else:
         print(f"❌ ERROR: File {model_path} not found!")
 
@@ -42,8 +43,7 @@ def read_root(request: Request):
 @app.post("/predict")
 def predict(data: StudentInput):
     if not model:
-        # Code này sẽ hiện lên Log Jenkins nếu lỗi
-        return {"error": f"Model not loaded. Files in dir: {os.listdir('.')}"}
+        return {"error": "Model not loaded. Check server logs."}
     
     features = np.array([[data.toan, data.ly, data.anh]])
     prediction = model.predict(features)[0]
@@ -57,4 +57,3 @@ def predict(data: StudentInput):
         ket_qua = "💻 Xuất sắc! Đậu ngành CNTT (Global)."
         
     return {"prediction": ket_qua}
-
