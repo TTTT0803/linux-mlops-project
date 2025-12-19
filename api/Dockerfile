@@ -1,5 +1,6 @@
 FROM python:3.9-slim
-ENV REFRESH_AT=2025_12_19_FINAL
+# Đổi tên biến này để ép Docker chạy lại từ đầu
+ENV REFRESH_AT=2025_12_19_FIX_VERSION
 WORKDIR /app
 
 # 1. Copy file cài đặt thư viện
