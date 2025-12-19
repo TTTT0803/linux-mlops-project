@@ -7,17 +7,13 @@ import numpy as np
 import os
 
 app = FastAPI()
-
-# Cấu hình để load giao diện từ thư mục templates
 templates = Jinja2Templates(directory="templates")
 
-class IrisInput(BaseModel):
-    sepal_length: float
-    sepal_width: float
-    petal_length: float
-    petal_width: float
+class StudentInput(BaseModel):
+    toan: float
+    ly: float
+    anh: float
 
-# Load Model
 model_path = "model.pkl"
 model = None
 
@@ -28,16 +24,23 @@ def load_model():
         with open(model_path, "rb") as f:
             model = pickle.load(f)
 
-# API hiển thị giao diện đẹp (Home Page)
 @app.get("/", response_class=HTMLResponse)
 def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
-# API Dự đoán (Backend xử lý)
 @app.post("/predict")
-def predict(data: IrisInput):
+def predict(data: StudentInput):
     if not model:
         return {"error": "Model not loaded"}
-    features = np.array([[data.sepal_length, data.sepal_width, data.petal_length, data.petal_width]])
-    prediction = model.predict(features)
-    return {"prediction": str(prediction[0])}
+    features = np.array([[data.toan, data.ly, data.anh]])
+    prediction = model.predict(features)[0]
+    
+    ket_qua = ""
+    if prediction == 0:
+        ket_qua = "😢 Rất tiếc, chưa đủ điểm."
+    elif prediction == 1:
+        ket_qua = "🚢 Chúc mừng! Đậu ngành Logistics."
+    else:
+        ket_qua = "💻 Xuất sắc! Đậu ngành CNTT (Global)."
+        
+    return {"prediction": ket_qua}
