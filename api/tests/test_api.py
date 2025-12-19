@@ -4,12 +4,21 @@ from main import app
 client = TestClient(app)
 
 def test_read_main():
+    # Gửi yêu cầu vào trang chủ
     response = client.get("/")
+    
+    # 1. Kiểm tra kết nối thành công (200 OK)
     assert response.status_code == 200
-    # Câu này phải khớp với câu bạn đã sửa trong main.py
-    assert response.json() == {"message": "DEMO FINAL: Chao Thay - He thong da tu dong update!"}
+    
+    # 2. Kiểm tra nội dung trả về là HTML (Giao diện web)
+    # (Code cũ đòi JSON nên mới lỗi, giờ mình sửa thành kiểm tra HTML)
+    assert "text/html" in response.headers["content-type"]
+    
+    # 3. Kiểm tra xem trong web có hiện đúng tiêu đề không
+    assert "Dự đoán Hoa Iris" in response.text
 
 def test_predict():
+    # API Dự đoán thì vẫn trả về JSON như cũ, nên giữ nguyên
     payload = {
         "sepal_length": 5.1,
         "sepal_width": 3.5,
@@ -19,6 +28,6 @@ def test_predict():
     response = client.post("/predict", json=payload)
     assert response.status_code == 200
     
-    # Chấp nhận cả trường hợp có kết quả hoặc báo lỗi model (để test luôn xanh)
+    # Kiểm tra kết quả
     data = response.json()
     assert "prediction" in data or "error" in data
