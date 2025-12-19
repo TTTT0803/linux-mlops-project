@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.10-slim
 # Đổi tên biến này để ép Docker chạy lại từ đầu
 ENV REFRESH_AT=2025_12_19_FIX_VERSION
 WORKDIR /app
