@@ -14,6 +14,7 @@ class StudentInput(BaseModel):
     ly: float
     anh: float
 
+# Tên file model chuẩn
 model_path = "model_final.pkl"
 model = None
 
@@ -30,11 +31,15 @@ def read_root(request: Request):
 
 @app.post("/predict")
 def predict(data: StudentInput):
+    # Kiểm tra model đã load chưa
     if not model:
         return {"error": "Model not loaded"}
+    
+    # Dự đoán
     features = np.array([[data.toan, data.ly, data.anh]])
     prediction = model.predict(features)[0]
     
+    # Chuyển kết quả thành chữ
     ket_qua = ""
     if prediction == 0:
         ket_qua = "😢 Rất tiếc, chưa đủ điểm."
@@ -44,5 +49,3 @@ def predict(data: StudentInput):
         ket_qua = "💻 Xuất sắc! Đậu ngành CNTT (Global)."
         
     return {"prediction": ket_qua}
-# Force update model
-# Final check VKU
