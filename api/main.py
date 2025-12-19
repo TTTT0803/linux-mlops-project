@@ -44,3 +44,4 @@ def predict(data: StudentInput):
         ket_qua = "💻 Xuất sắc! Đậu ngành CNTT (Global)."
         
     return {"prediction": ket_qua}
+# Force update model
