@@ -1,4 +1,5 @@
 FROM python:3.9-slim
+ENV REFRESH_AT=2025_12_19_FINAL
 WORKDIR /app
 
 # 1. Copy file cài đặt thư viện
