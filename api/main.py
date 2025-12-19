@@ -14,7 +14,7 @@ class StudentInput(BaseModel):
     ly: float
     anh: float
 
-model_path = "model.pkl"
+model_path = "vku_model.pkl"
 model = None
 
 @app.on_event("startup")

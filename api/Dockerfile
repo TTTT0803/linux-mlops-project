@@ -6,7 +6,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # 2. QUAN TRỌNG: Copy file model vào
-COPY model.pkl .
+COPY vku_model.pkl .
 
 # 3. Copy toàn bộ code còn lại
 COPY . .
