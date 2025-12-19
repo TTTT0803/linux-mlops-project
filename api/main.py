@@ -45,3 +45,4 @@ def predict(data: StudentInput):
         
     return {"prediction": ket_qua}
 # Force update model
+# Final check VKU
