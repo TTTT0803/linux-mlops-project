@@ -1,6 +1,7 @@
 FROM python:3.10-slim
 # Đổi tên biến này để ép Docker chạy lại từ đầu
-ENV REFRESH_AT=2025_12_19_FIX_VERSION
+# Đổi tên biến này để ép Docker KHÔNG ĐƯỢC DÙNG CACHE
+ENV REFRESH_AT=2025_12_19_LAST_CHANCE
 WORKDIR /app
 
 # 1. Copy file cài đặt thư viện

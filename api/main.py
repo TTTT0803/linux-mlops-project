@@ -57,3 +57,4 @@ def predict(data: StudentInput):
         ket_qua = "💻 Xuất sắc! Đậu ngành CNTT (Global)."
         
     return {"prediction": ket_qua}
+# Force update Jenkins 2025 - Final check
